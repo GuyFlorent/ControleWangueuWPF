@@ -56,7 +56,7 @@ namespace ControleWangueuWPF
 
         }
 
-
+        //parti du produit
 
         public List<Produit> ListeProduit()
         {
@@ -72,18 +72,37 @@ namespace ControleWangueuWPF
 
             dbContext.Produits.Add(produit);
        dbContext.SaveChanges();
+           
     }
 
 
-    public void supprimerCommande(string email)
+    public void supprimerProduit(Produit p)
     {
-        var commandeSUprime = dbContext.Clients.FirstOrDefault(f => f.email == email).Commandes.ToList();
-        if (commandeSUprime != null)
-        {
-           // dbContext.Clients.Remove(clientSuprimer);
+            var ProduitSuprime = dbContext.Produits.FirstOrDefault(f => f.id_produit == p.id_produit);
+        
+        
+           dbContext.Produits.Remove(ProduitSuprime);
             dbContext.SaveChanges();
-        }
+        
     }
 
+        // parti du stock
+
+        public List<Stock> listeStock()
+        {
+            var liste = dbContext.Stocks.ToList();
+            return liste;
+        }
+
+        public void ajouterStock()
+        {
+            var ajouter = (from sto in dbContext.Stocks
+                           join prod in dbContext.Produits on sto.id_stock equals prod.id_stock
+                           select sto).Count();
+          
+            
+            dbContext.SaveChanges();
+                           
+        }
 }
 }

@@ -22,19 +22,25 @@ namespace ControleWangueuWPF
     {
         private List<Client> test;
         private Client cli;
+
         private List<Produit> prod;
         private Produit clipro;
+
+        private List<Stock> stock;
+        private Stock cliStock;
         public MainWindow()
         {
             InitializeComponent();
             
             donnees donnees = new donnees();
-            // donnees.ajouterClient("etoo", "fils", "etoo.@yohh.com", "hyir");
+
+            stock = donnees.listeStock();
+            stockDataGrid.DataContext = stock;
+
             prod = donnees.ListeProduit();
-
             produitDataGrid.DataContext = prod;
-            test = donnees.ListeClient();
 
+            test = donnees.ListeClient();
             clientDataGrid.DataContext = test;
         }
 
@@ -47,6 +53,9 @@ namespace ControleWangueuWPF
             System.Windows.Data.CollectionViewSource produitViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("produitViewSource")));
             // Charger les données en définissant la propriété CollectionViewSource.Source :
             // produitViewSource.Source = [source de données générique]
+            System.Windows.Data.CollectionViewSource stockViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("stockViewSource")));
+            // Charger les données en définissant la propriété CollectionViewSource.Source :
+            // stockViewSource.Source = [source de données générique]
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -92,6 +101,7 @@ namespace ControleWangueuWPF
             else 
             {
                 donnees.ajouterProduit(txtNom.Text);
+                
                 prod = donnees.ListeProduit();
                 produitDataGrid.DataContext = prod;
 
@@ -106,10 +116,23 @@ namespace ControleWangueuWPF
         private void Supprimer_Click(object sender, RoutedEventArgs e)
         {
             donnees donnees = new donnees();
-            donnees.supprimerClient(this.cli);
-            test = donnees.ListeClient();
+            if (txtNom.Text != null && txtPrenom.Text != null && txtEmail.Text != null && txtPassWord.Text != null &&
+                txtNom.Text != "" && txtPrenom.Text != "" && txtEmail.Text != "" && txtPassWord.Text != "")
+            {
+                donnees.supprimerClient(this.cli);
+                test = donnees.ListeClient();
 
-            clientDataGrid.DataContext = test;
+                clientDataGrid.DataContext = test;
+            }
+            else
+            {
+                donnees.supprimerProduit(this.clipro);
+                prod = donnees.ListeProduit();
+
+                produitDataGrid.DataContext = prod;
+            }
+
+            
             MessageBox.Show("Supprimer avec succes!");
 
         }
@@ -122,8 +145,8 @@ namespace ControleWangueuWPF
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            MonTab.SelectedIndex = 1;
-            int i = clientDataGrid.SelectedIndex;
+            MonTab.SelectedIndex = 3;
+            int i = produitDataGrid.SelectedIndex;
 
             this.clipro= prod[i];
             txtNom.Text = clipro.nom;

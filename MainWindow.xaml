@@ -9,6 +9,7 @@
     <Window.Resources>
         <CollectionViewSource x:Key="clientViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Client}, CreateList=True}"/>
         <CollectionViewSource x:Key="produitViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Produit}, CreateList=True}"/>
+        <CollectionViewSource x:Key="stockViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Stock}, CreateList=True}"/>
     </Window.Resources>
     <Grid>
         <TabControl x:Name="MonTab" >
@@ -72,6 +73,31 @@
 
 
 
+                </Grid>
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Stock"></TextBlock>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="300"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <WrapPanel Grid.Row="0" DataContext="{StaticResource stockViewSource}" >
+                        <DataGrid x:Name="stockDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" Height="300" ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" Width="785">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="id_stockColumn1" Binding="{Binding id_stock}" Header="id stock" Width="SizeToHeader"/>
+                                <DataGridTextColumn x:Name="quantitéStockColumn" Binding="{Binding quantité}" Header="quantité" Width="SizeToHeader"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </WrapPanel>
+
+                    <WrapPanel Grid.Row="1">
+                        <Button x:Name="MonStock" Content="Valider Stock"></Button>
+                    </WrapPanel>
                 </Grid>
             </TabItem>
 
