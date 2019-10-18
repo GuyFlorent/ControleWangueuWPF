@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9cd9b7d7ec694921a399bdff853e2117" Name="Diagram1">
+        <EntityTypeShape EntityType="WANGUEUModel.Client" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="WANGUEUModel.Commande" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="WANGUEUModel.Stock" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <AssociationConnector Association="WANGUEUModel.FK_Client_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="WANGUEUModel.FK_Commande_Commande" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WANGUEUModel.Achat" Width="1.5" PointX="7.5" PointY="1.25" />
+        <AssociationConnector Association="WANGUEUModel.FK_Achat_Commande" />
+        <EntityTypeShape EntityType="WANGUEUModel.Produit" Width="1.5" PointX="5.25" PointY="5.125" />
+        <AssociationConnector Association="WANGUEUModel.FK_Achat_Achat" />
+        <AssociationConnector Association="WANGUEUModel.FK_Produit_Commande" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

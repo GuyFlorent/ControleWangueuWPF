@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="WANGUEUModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Achat">
+          <Key>
+            <PropertyRef Name="id_achat" />
+          </Key>
+          <Property Name="id_achat" Type="int" Nullable="false" />
+          <Property Name="quantité" Type="int" />
+          <Property Name="id_produit" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_commande" Type="int" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="id_client" />
+          </Key>
+          <Property Name="id_client" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nom" Type="varchar" MaxLength="50" />
+          <Property Name="prenom" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Commande">
+          <Key>
+            <PropertyRef Name="id_commande" />
+          </Key>
+          <Property Name="id_commande" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_client" Type="int" />
+          <Property Name="heure_Commande" Type="varchar" MaxLength="50" />
+          <Property Name="statut_paiement" Type="varchar" MaxLength="50" />
+          <Property Name="statut_livraison" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Produit">
+          <Key>
+            <PropertyRef Name="id_produit" />
+          </Key>
+          <Property Name="id_produit" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_stock" Type="int" />
+          <Property Name="nom" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="id_stock" />
+          </Key>
+          <Property Name="id_stock" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="quantité" Type="int" />
+        </EntityType>
+        <Association Name="FK_Achat_Achat">
+          <End Role="Produit" Type="Self.Produit" Multiplicity="1" />
+          <End Role="Achat" Type="Self.Achat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produit">
+              <PropertyRef Name="id_produit" />
+            </Principal>
+            <Dependent Role="Achat">
+              <PropertyRef Name="id_produit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achat_Commande">
+          <End Role="Commande" Type="Self.Commande" Multiplicity="0..1" />
+          <End Role="Achat" Type="Self.Achat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Commande">
+              <PropertyRef Name="id_commande" />
+            </Principal>
+            <Dependent Role="Achat">
+              <PropertyRef Name="id_commande" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Client1" Type="Self.Client" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="id_client" />
+            </Principal>
+            <Dependent Role="Client1">
+              <PropertyRef Name="id_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Commande">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="id_client" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="id_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Produit_Commande">
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <End Role="Produit" Type="Self.Produit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stock">
+              <PropertyRef Name="id_stock" />
+            </Principal>
+            <Dependent Role="Produit">
+              <PropertyRef Name="id_stock" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WANGUEUModelStoreContainer">
+          <EntitySet Name="Achat" EntityType="Self.Achat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Commande" EntityType="Self.Commande" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Produit" EntityType="Self.Produit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stock" EntityType="Self.Stock" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Achat_Achat" Association="Self.FK_Achat_Achat">
+            <End Role="Produit" EntitySet="Produit" />
+            <End Role="Achat" EntitySet="Achat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achat_Commande" Association="Self.FK_Achat_Commande">
+            <End Role="Commande" EntitySet="Commande" />
+            <End Role="Achat" EntitySet="Achat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_Client" Association="Self.FK_Client_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Client1" EntitySet="Client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Commande" Association="Self.FK_Commande_Commande">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Produit_Commande" Association="Self.FK_Produit_Commande">
+            <End Role="Stock" EntitySet="Stock" />
+            <End Role="Produit" EntitySet="Produit" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WANGUEUModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="id_client" />
+          </Key>
+          <Property Name="id_client" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prenom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client1" Relationship="Self.FK_Client_Client" FromRole="Client" ToRole="Client1" />
+          <NavigationProperty Name="Client2" Relationship="Self.FK_Client_Client" FromRole="Client1" ToRole="Client" />
+          <NavigationProperty Name="Commandes" Relationship="Self.FK_Commande_Commande" FromRole="Client" ToRole="Commande" />
+        </EntityType>
+        <EntityType Name="Commande">
+          <Key>
+            <PropertyRef Name="id_commande" />
+          </Key>
+          <Property Name="id_commande" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_client" Type="Int32" />
+          <Property Name="heure_Commande" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="statut_paiement" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="statut_livraison" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Commande_Commande" FromRole="Commande" ToRole="Client" />
+          <NavigationProperty Name="Achats" Relationship="WANGUEUModel.FK_Achat_Commande" FromRole="Commande" ToRole="Achat" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="id_stock" />
+          </Key>
+          <Property Name="id_stock" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="quantité" Type="Int32" />
+          <NavigationProperty Name="Produits" Relationship="WANGUEUModel.FK_Produit_Commande" FromRole="Stock" ToRole="Produit" />
+        </EntityType>
+        <Association Name="FK_Client_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Client1" Type="Self.Client" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="id_client" />
+            </Principal>
+            <Dependent Role="Client1">
+              <PropertyRef Name="id_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Commande">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="id_client" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="id_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WANGUEUEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="Commandes" EntityType="Self.Commande" />
+          <EntitySet Name="Stocks" EntityType="Self.Stock" />
+          <AssociationSet Name="FK_Client_Client" Association="Self.FK_Client_Client">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Client1" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Commande" Association="Self.FK_Commande_Commande">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Commande" EntitySet="Commandes" />
+          </AssociationSet>
+          <EntitySet Name="Achats" EntityType="WANGUEUModel.Achat" />
+          <AssociationSet Name="FK_Achat_Commande" Association="WANGUEUModel.FK_Achat_Commande">
+            <End Role="Commande" EntitySet="Commandes" />
+            <End Role="Achat" EntitySet="Achats" />
+          </AssociationSet>
+          <EntitySet Name="Produits" EntityType="WANGUEUModel.Produit" />
+          <AssociationSet Name="FK_Achat_Achat" Association="WANGUEUModel.FK_Achat_Achat">
+            <End Role="Produit" EntitySet="Produits" />
+            <End Role="Achat" EntitySet="Achats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Produit_Commande" Association="WANGUEUModel.FK_Produit_Commande">
+            <End Role="Stock" EntitySet="Stocks" />
+            <End Role="Produit" EntitySet="Produits" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Achat">
+          <Key>
+            <PropertyRef Name="id_achat" />
+          </Key>
+          <Property Name="id_achat" Type="Int32" Nullable="false" />
+          <Property Name="quantité" Type="Int32" />
+          <Property Name="id_produit" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_commande" Type="Int32" />
+          <NavigationProperty Name="Commande" Relationship="WANGUEUModel.FK_Achat_Commande" FromRole="Achat" ToRole="Commande" />
+          <NavigationProperty Name="Produit" Relationship="WANGUEUModel.FK_Achat_Achat" FromRole="Achat" ToRole="Produit" />
+        </EntityType>
+        <Association Name="FK_Achat_Commande">
+          <End Type="WANGUEUModel.Commande" Role="Commande" Multiplicity="0..1" />
+          <End Type="WANGUEUModel.Achat" Role="Achat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Commande">
+              <PropertyRef Name="id_commande" />
+            </Principal>
+            <Dependent Role="Achat">
+              <PropertyRef Name="id_commande" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Produit">
+          <Key>
+            <PropertyRef Name="id_produit" />
+          </Key>
+          <Property Name="id_produit" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_stock" Type="Int32" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Achats" Relationship="WANGUEUModel.FK_Achat_Achat" FromRole="Produit" ToRole="Achat" />
+          <NavigationProperty Name="Stock" Relationship="WANGUEUModel.FK_Produit_Commande" FromRole="Produit" ToRole="Stock" />
+        </EntityType>
+        <Association Name="FK_Achat_Achat">
+          <End Type="WANGUEUModel.Produit" Role="Produit" Multiplicity="1" />
+          <End Type="WANGUEUModel.Achat" Role="Achat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produit">
+              <PropertyRef Name="id_produit" />
+            </Principal>
+            <Dependent Role="Achat">
+              <PropertyRef Name="id_produit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Produit_Commande">
+          <End Type="WANGUEUModel.Stock" Role="Stock" Multiplicity="0..1" />
+          <End Type="WANGUEUModel.Produit" Role="Produit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stock">
+              <PropertyRef Name="id_stock" />
+            </Principal>
+            <Dependent Role="Produit">
+              <PropertyRef Name="id_stock" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WANGUEUModelStoreContainer" CdmEntityContainer="WANGUEUEntities">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="WANGUEUModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="id_client" ColumnName="id_client" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+                <ScalarProperty Name="prenom" ColumnName="prenom" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Commandes">
+            <EntityTypeMapping TypeName="WANGUEUModel.Commande">
+              <MappingFragment StoreEntitySet="Commande">
+                <ScalarProperty Name="id_commande" ColumnName="id_commande" />
+                <ScalarProperty Name="id_client" ColumnName="id_client" />
+                <ScalarProperty Name="heure_Commande" ColumnName="heure_Commande" />
+                <ScalarProperty Name="statut_paiement" ColumnName="statut_paiement" />
+                <ScalarProperty Name="statut_livraison" ColumnName="statut_livraison" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stocks">
+            <EntityTypeMapping TypeName="WANGUEUModel.Stock">
+              <MappingFragment StoreEntitySet="Stock">
+                <ScalarProperty Name="id_stock" ColumnName="id_stock" />
+                <ScalarProperty Name="quantité" ColumnName="quantité" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Achats">
+            <EntityTypeMapping TypeName="WANGUEUModel.Achat">
+              <MappingFragment StoreEntitySet="Achat">
+                <ScalarProperty Name="id_commande" ColumnName="id_commande" />
+                <ScalarProperty Name="id_produit" ColumnName="id_produit" />
+                <ScalarProperty Name="quantité" ColumnName="quantité" />
+                <ScalarProperty Name="id_achat" ColumnName="id_achat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Produits">
+            <EntityTypeMapping TypeName="WANGUEUModel.Produit">
+              <MappingFragment StoreEntitySet="Produit">
+                <ScalarProperty Name="nom" ColumnName="nom" />
+                <ScalarProperty Name="id_stock" ColumnName="id_stock" />
+                <ScalarProperty Name="id_produit" ColumnName="id_produit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
